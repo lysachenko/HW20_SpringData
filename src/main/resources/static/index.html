@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+
+<body>
+<H1 style="text-align: center; margin-top: 10px">HW#20 Spring Data</H1>
+
+<div class="m-2 p-2">
+    <div class="col-5">
+        <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action list-group-item-dark active"
+               id="list-home-list" data-toggle="list" href="#"
+               onclick="getNotebooks()">Get notebooks
+            </a>
+
+            <a class="list-group-item list-group-item-action list-group-item-dark"
+               id="list-profile-list" data-toggle="list" href="#"
+               role="tab"
+               onclick="getNotebooksOrderedByManufacturer()">Get notebooks ordered by manufacturer
+            </a>
+
+            <a class="list-group-item list-group-item-action list-group-item-dark"
+               id="list-messages-list" data-toggle="list" href="#"
+               onclick="getNotebooksMemoryMoreThen()">
+                <label for="idMemory">Get notebooks with memory more than: </label>
+                <input id="idMemory" type="number" value="16">
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="m-4 p-2 ">
+    <TABLE id="resultTable" class="table table-striped table-bordered" >
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Model</th>
+            <th>Manufacturer</th>
+            <th>Processor</th>
+            <th>Memory (Mb)</th>
+            <th>Was in use</th>
+            <th>Hull type</th>
+            <th>Price ₴</th>
+            <th>Date of issue</th>
+        </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </TABLE>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+</script>
+<script>
+    function getNotebooks() {
+        $.getJSON("/notebooks", function (data) {
+            $('#resultTable>tbody').empty();
+            $.each(data, function (key, val) {
+                let items = [];
+                $.each(val, function (i, item) {
+                    items.push("<td id='" + i + "'>" + item + "</td>");
+                })
+                $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
+            });
+        });
+    }
+
+    function getNotebooksOrderedByManufacturer() {
+        $.getJSON("/notebooks/ordered-by-manufacturer", function (data) {
+            $('#resultTable>tbody').empty();
+            $.each(data, function (key, val) {
+                let items = [];
+                $.each(val, function (i, item) {
+                    items.push("<td id='" + i + "'>" + item + "</td>");
+                })
+                $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
+            });
+        });
+    }
+
+    function getNotebooksMemoryMoreThen() {
+        let memory = document.getElementById('idMemory').value;
+
+        if (!new RegExp("[0-9]").test(memory)) {
+            alert("Incorrect input!");
+            $(document).ready(function () {
+                $('#idMemory').val('');
+            });
+        } else {
+            $.getJSON("/notebooks/memory?value=" + memory, function (data) {
+                $('#resultTable>tbody').empty();
+                if (data.length <= 0) {
+                    alert('No elements with memory more than: ' + memory + '!')
+                } else {
+                    $.each(data, function (key, val) {
+                        let items = [];
+                        $.each(val, function (i, item) {
+                            items.push("<td id='" + i + "'>" + item + "</td>");
+                        })
+                        $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
+                    });
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
