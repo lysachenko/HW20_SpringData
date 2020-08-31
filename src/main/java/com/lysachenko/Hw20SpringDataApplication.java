@@ -24,6 +24,6 @@ public class Hw20SpringDataApplication implements CommandLineRunner {
         NotebookRepository notebookRepository = appContext.getBean(NotebookRepository.class);
         //notebookService.getAllOrderByManufacturer().forEach(System.out::println);
 
-        notebookRepository.getNotebooksByWasInUseTrue().forEach(System.out::println);
+        //notebookRepository.getNotebooksByWasInUseTrue().forEach(System.out::println);
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface NotebookRepository extends JpaRepository<Notebook, Long> {
 
-    List<Notebook> getNotebooksByMemoryAfter(int after);
+    List<Notebook> getNotebooksByMemoryAfter(int value);
 
     @Query(value = "SELECT n from Notebook n order by n.manufacturer")
     List<Notebook> getNotebooksOrderByManufacturer();

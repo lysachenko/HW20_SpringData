@@ -18,15 +18,11 @@ public class NotebookService {
     }
 
     public void save(Notebook notebook) {
-        notebookRepository.saveAndFlush(notebook);
+        notebookRepository.save(notebook);
     }
 
     public void delete(Notebook notebook) {
         notebookRepository.delete(notebook);
-    }
-
-    public void update(Notebook notebook) {
-        notebookRepository.saveAndFlush(notebook);
     }
 
     public List<Notebook> getAll() {
@@ -37,8 +33,12 @@ public class NotebookService {
         return notebookRepository.getNotebooksOrderByManufacturer();
     }
 
-    public List<Notebook> getNotebooksByMemoryAfter(int after) {
-        return notebookRepository.getNotebooksByMemoryAfter(after);
+    public List<Notebook> getNotebooksByMemoryAfter(int value) {
+        return notebookRepository.getNotebooksByMemoryAfter(value);
+    }
+
+    public List<Notebook> getNotebooksByWasInUse() {
+        return notebookRepository.getNotebooksByWasInUseTrue();
     }
 
     public Notebook getById(Long id) {

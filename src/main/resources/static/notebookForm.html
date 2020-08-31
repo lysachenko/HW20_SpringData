@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notebook</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark" style="margin-bottom: 30px">
+    <a class="navbar-brand" href="">Notebook parameters</a>
+    <a href="/">
+        <button class="btn btn-light my-2 my-sm-0" type="submit">Back</button>
+    </a>
+</nav>
+
+<div style="margin-right: 150px; margin-left: 200px;">
+    <form id="notebookForm">
+        <div class="form-group row">
+            <label for="model" class="col-sm-2 col-form-label">Model:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="model" name="model">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="manufacturer" class="col-sm-2 col-form-label">Manufacturer:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="manufacturer" name="manufacturer">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="processor" class="col-sm-2 col-form-label">Processor:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="processor" name="processor">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="memory" class="col-sm-2 col-form-label">Memory:</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="memory" name="memory">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="wasInUse" class="col-sm-2 col-form-label">Was in use:</label>
+            <div class="col-sm-10">
+                <input type="checkbox" class="form-check-label" id="wasInUse" name="wasInUse">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="hullType" class="col-sm-2 col-form-label">Hull type:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="hullType" name="hullType">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="price" class="col-sm-2 col-form-label">Price ₴:</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="price" name="price">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="dateOfIssue" class="col-sm-2 col-form-label">Date of issue:</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control" id="dateOfIssue" name="dateOfIssue">
+            </div>
+        </div>
+
+        <div class="col text-center">
+            <button id="submitBtn" type="submit" class="btn btn-dark">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#notebookForm").validate({
+            rules: {
+                model: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                manufacturer: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                processor: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                memory: {
+                    required: true,
+                    number: true
+                },
+                hullType: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30
+                },
+                price: {
+                    required: true,
+                    number: true
+                },
+                dateOfIssue: {
+                    required: true
+                }
+            },
+            messages: {
+                model: {
+                    required: "This field required!",
+                    minlength: 'Min length - 3 symbols!',
+                    maxlength: 'Max length - 30 symbols!'
+                },
+                manufacturer: {
+                    required: "This field required!",
+                    minlength: 'Min length - 3 symbols!',
+                    maxlength: 'Max length - 30 symbols!'
+                },
+                processor: {
+                    required: "This field required!",
+                    minlength: 'Min length - 3 symbols!',
+                    maxlength: 'Max length - 30 symbols!'
+                },
+                memory: {
+                    required: "This field required!",
+                    number: "This field must contain only numbers!"
+                },
+                hullType: {
+                    required: "This field required!",
+                    minlength: 'Min length - 3 symbols!',
+                    maxlength: 'Max length - 30 symbols!'
+                },
+                price: {
+                    required: "This field required!",
+                    number: "This field must contain only numbers!"
+                },
+                dateOfIssue: {
+                    required: "This field required!",
+                    number: "This field must contain only numbers!"
+                }
+            }
+        });
+    })
+
+    $('#notebookForm').on('submit', function (e) {
+        e.preventDefault();
+        if ($("#notebookForm").valid()) {
+
+            let model = $("#model").val()
+            let manufacturer = $("#manufacturer").val();
+            let processor = $("#processor").val();
+            let memory = $("#memory").val();
+            let wasInUse = $("#wasInUse").is(":checked") ? "true" : "false";
+            let hullType = $("#hullType").val();
+            let price = $("#price").val();
+            let dateOfIssue = $("#dateOfIssue").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/notebooks",
+                data: JSON.stringify({
+                    "model": model,
+                    "manufacturer": manufacturer,
+                    "processor": processor,
+                    "memory": memory,
+                    "wasInUse": wasInUse,
+                    "hullType": hullType,
+                    "price": price,
+                    "dateOfIssue": dateOfIssue
+                }),
+                contentType: "application/json",
+                success: function (answer) {
+                    $('#notebookForm').trigger('reset');
+                    alert("Notebook " + model + " created!");
+                },
+                error: function () {
+                    alert("Error!")
+                }
+            });
+        }
+    });
+
+</script>
+</body>
+</html>

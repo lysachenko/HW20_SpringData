@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Spring Boot</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
           crossorigin="anonymous">
 </head>
 
 <body>
-<H1 style="text-align: center; margin-top: 10px">HW#20 Spring Data</H1>
+<nav class="navbar navbar-dark bg-dark" style="margin-bottom: 30px">
+    <a class="navbar-brand" >HW#20 Spring Data</a>
+</nav>
 
 <div class="m-2 p-2">
     <div class="col-5">
@@ -31,12 +33,21 @@
                 <label for="idMemory">Get notebooks with memory more than: </label>
                 <input id="idMemory" type="number" value="16">
             </a>
+
+            <a class="list-group-item list-group-item-action list-group-item-dark"
+               id="list-messages-list1" data-toggle="list" href="#"
+               onclick="getNotebooksWasInUse()">Get notebooks that was in use
+            </a>
+
+            <a onclick="openNotebookFormUrl()" class="list-group-item list-group-item-action list-group-item-dark"
+               id="new-notebook" data-toggle="list">Create notebook
+            </a>
         </div>
     </div>
 </div>
 
 <div class="m-4 p-2 ">
-    <TABLE id="resultTable" class="table table-striped table-bordered" >
+    <TABLE id="resultTable" class="table table-striped table-bordered">
         <thead class="table-dark">
         <tr>
             <th>ID</th>
@@ -46,8 +57,9 @@
             <th>Memory (Mb)</th>
             <th>Was in use</th>
             <th>Hull type</th>
-            <th>Price ₴</th>
+            <th>Price, ₴</th>
             <th>Date of issue</th>
+            <th>Update/Delete</th>
         </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -59,35 +71,72 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous">
 </script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous">
 </script>
 <script>
-    function getNotebooks() {
-        $.getJSON("/notebooks", function (data) {
+    let baseUrl = "/notebooks";
+    let orderedByManufacturerUrl = "/ordered-by-manufacturer";
+    let wasInUseUrl = "/was-in-use";
+    let memoryValueUrl = "/memory?value=";
+
+    function openNotebookFormUrl() {
+        location.href = "/notebook"
+    }
+
+    function getNotebooksRows(url) {
+        $.getJSON(url, function (data) {
             $('#resultTable>tbody').empty();
-            $.each(data, function (key, val) {
-                let items = [];
-                $.each(val, function (i, item) {
-                    items.push("<td id='" + i + "'>" + item + "</td>");
-                })
-                $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
-            });
+            if (data.length <= 0) {
+                alert('No elements!')
+            } else {
+                $.each(data, function (key, val) {
+                    let items = [];
+                    $.each(val, function (i, item) {
+                        items.push("<td id='" + i + "'>" + item + "</td>");
+                    })
+                    items.push("<td>"
+                        + "<button onclick='openNotebookFormUrl()' type=\"button\" class=\"btn btn-outline-info\" style='margin-left: 20px'>U</button>"
+                        + "<button onclick='deleteNotebook(this)' type=\"button\" class=\"btn btn-outline-danger\" style='margin-left: 20px'>D</button>"
+                        + "</td>")
+                    $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
+                });
+            }
         });
     }
 
-    function getNotebooksOrderedByManufacturer() {
-        $.getJSON("/notebooks/ordered-by-manufacturer", function (data) {
-            $('#resultTable>tbody').empty();
-            $.each(data, function (key, val) {
-                let items = [];
-                $.each(val, function (i, item) {
-                    items.push("<td id='" + i + "'>" + item + "</td>");
-                })
-                $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
-            });
+    function deleteNotebook(btn) {
+        let row = btn.parentNode.parentNode;
+        let notebookId = row.firstChild.textContent
+        $.ajax({
+            type: "DELETE",
+            url: baseUrl + "/" + notebookId,
+            success: function (data) {
+                row.parentNode.removeChild(row);
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
         });
+    }
+
+    getNotebooks();
+
+    function getNotebooks() {
+        getNotebooksRows(baseUrl);
+    }
+
+    function getNotebooksOrderedByManufacturer() {
+        getNotebooksRows(baseUrl + orderedByManufacturerUrl);
+    }
+
+    function getNotebooksWasInUse() {
+        getNotebooksRows(baseUrl + wasInUseUrl);
     }
 
     function getNotebooksMemoryMoreThen() {
@@ -99,20 +148,7 @@
                 $('#idMemory').val('');
             });
         } else {
-            $.getJSON("/notebooks/memory?value=" + memory, function (data) {
-                $('#resultTable>tbody').empty();
-                if (data.length <= 0) {
-                    alert('No elements with memory more than: ' + memory + '!')
-                } else {
-                    $.each(data, function (key, val) {
-                        let items = [];
-                        $.each(val, function (i, item) {
-                            items.push("<td id='" + i + "'>" + item + "</td>");
-                        })
-                        $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");
-                    });
-                }
-            });
+            getNotebooksRows(baseUrl + memoryValueUrl + memory);
         }
     }
 </script>
