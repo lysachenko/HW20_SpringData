@@ -176,7 +176,7 @@
             $("#manufacturer").val(data.manufacturer);
             $("#processor").val(data.processor);
             $("#memory").val(data.memory);
-            $("#wasInUse").val(data.wasInUse);
+            $("#wasInUse").prop('checked', data.wasInUse);
             $("#hullType").val(data.hullType);
             $("#price").val(data.price);
             $("#dateOfIssue").val(data.dateOfIssue);

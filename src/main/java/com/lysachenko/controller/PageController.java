@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PageController {
 
     @RequestMapping("/")
-    public String getStartPage(){
+    public String getStartPage() {
         return "/index.html";
     }
 
     @RequestMapping("notebook")
-    public String getNotebookFrom(){
+    public String getNotebookFrom() {
         return "/notebookForm.html";
     }
 
     @RequestMapping("notebook/edit/{id}")
-    public String getNotebookFromToEdit(){
+    public String getNotebookFromToEdit() {
         return "/notebookForm.html";
     }
 }

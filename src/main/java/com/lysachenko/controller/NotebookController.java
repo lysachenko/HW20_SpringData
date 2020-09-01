@@ -46,7 +46,7 @@ public class NotebookController {
         notebookFromDB.setHullType(notebook.getHullType());
         notebookFromDB.setPrice(notebook.getPrice());
         notebookFromDB.setDateOfIssue(notebook.getDateOfIssue());
-        notebookService.save(notebook);
+        notebookService.save(notebookFromDB);
         return ResponseEntity.ok(notebook);
     }
 

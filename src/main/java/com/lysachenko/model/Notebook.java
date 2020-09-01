@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -23,7 +22,7 @@ public class Notebook {
     private String hullType;
     private double price;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateOfIssue;
 
     @Override
