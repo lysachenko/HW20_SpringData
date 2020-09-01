@@ -15,4 +15,9 @@ public class PageController {
     public String getNotebookFrom(){
         return "/notebookForm.html";
     }
+
+    @RequestMapping("notebook/edit/{id}")
+    public String getNotebookFromToEdit(){
+        return "/notebookForm.html";
+    }
 }

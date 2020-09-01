@@ -91,7 +91,10 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 
+</body>
 <script>
+    let baseUrl = "/notebooks";
+
     $(document).ready(function () {
         $("#notebookForm").validate({
             rules: {
@@ -164,44 +167,96 @@
         });
     })
 
-    $('#notebookForm').on('submit', function (e) {
-        e.preventDefault();
-        if ($("#notebookForm").valid()) {
+    if (window.location.href.indexOf("/notebook/edit/") > -1) {
+        let pathArray = window.location.pathname.split('/');
+        let id = pathArray[3];
 
-            let model = $("#model").val()
-            let manufacturer = $("#manufacturer").val();
-            let processor = $("#processor").val();
-            let memory = $("#memory").val();
-            let wasInUse = $("#wasInUse").is(":checked") ? "true" : "false";
-            let hullType = $("#hullType").val();
-            let price = $("#price").val();
-            let dateOfIssue = $("#dateOfIssue").val();
+        $.getJSON(baseUrl + "/" + id, function (data) {
+            $("#model").val(data.model);
+            $("#manufacturer").val(data.manufacturer);
+            $("#processor").val(data.processor);
+            $("#memory").val(data.memory);
+            $("#wasInUse").val(data.wasInUse);
+            $("#hullType").val(data.hullType);
+            $("#price").val(data.price);
+            $("#dateOfIssue").val(data.dateOfIssue);
+        });
 
-            $.ajax({
-                type: "POST",
-                url: "/notebooks",
-                data: JSON.stringify({
-                    "model": model,
-                    "manufacturer": manufacturer,
-                    "processor": processor,
-                    "memory": memory,
-                    "wasInUse": wasInUse,
-                    "hullType": hullType,
-                    "price": price,
-                    "dateOfIssue": dateOfIssue
-                }),
-                contentType: "application/json",
-                success: function (answer) {
-                    $('#notebookForm').trigger('reset');
-                    alert("Notebook " + model + " created!");
-                },
-                error: function () {
-                    alert("Error!")
-                }
-            });
-        }
-    });
+        $('#notebookForm').on('submit', function (e) {
+            e.preventDefault();
+            if ($("#notebookForm").valid()) {
 
+                let model = $("#model").val()
+                let manufacturer = $("#manufacturer").val();
+                let processor = $("#processor").val();
+                let memory = $("#memory").val();
+                let wasInUse = $("#wasInUse").is(":checked") ? "true" : "false";
+                let hullType = $("#hullType").val();
+                let price = $("#price").val();
+                let dateOfIssue = $("#dateOfIssue").val();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/notebooks",
+                    data: JSON.stringify({
+                        "id": id,
+                        "model": model,
+                        "manufacturer": manufacturer,
+                        "processor": processor,
+                        "memory": memory,
+                        "wasInUse": wasInUse,
+                        "hullType": hullType,
+                        "price": price,
+                        "dateOfIssue": dateOfIssue
+                    }),
+                    contentType: "application/json",
+                    success: function (answer) {
+                        alert("Notebook " + model + " updated!");
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+        });
+    } else {
+        $('#notebookForm').on('submit', function (e) {
+            e.preventDefault();
+            if ($("#notebookForm").valid()) {
+
+                let model = $("#model").val()
+                let manufacturer = $("#manufacturer").val();
+                let processor = $("#processor").val();
+                let memory = $("#memory").val();
+                let wasInUse = $("#wasInUse").is(":checked") ? "true" : "false";
+                let hullType = $("#hullType").val();
+                let price = $("#price").val();
+                let dateOfIssue = $("#dateOfIssue").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/notebooks",
+                    data: JSON.stringify({
+                        "model": model,
+                        "manufacturer": manufacturer,
+                        "processor": processor,
+                        "memory": memory,
+                        "wasInUse": wasInUse,
+                        "hullType": hullType,
+                        "price": price,
+                        "dateOfIssue": dateOfIssue
+                    }),
+                    contentType: "application/json",
+                    success: function (answer) {
+                        $('#notebookForm').trigger('reset');
+                        alert("Notebook " + model + " created!");
+                    },
+                    error: function () {
+                        alert("Error!")
+                    }
+                });
+            }
+        });
+    }
 </script>
-</body>
 </html>

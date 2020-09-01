@@ -86,7 +86,13 @@
     let memoryValueUrl = "/memory?value=";
 
     function openNotebookFormUrl() {
-        location.href = "/notebook"
+        location.href = "/notebook";
+    }
+
+    function openNotebookFormUrlById(btn) {
+        let row = btn.parentNode.parentNode;
+        let notebookId = row.firstChild.textContent
+        location.href = "/notebook/edit/" + notebookId;
     }
 
     function getNotebooksRows(url) {
@@ -101,7 +107,7 @@
                         items.push("<td id='" + i + "'>" + item + "</td>");
                     })
                     items.push("<td>"
-                        + "<button onclick='openNotebookFormUrl()' type=\"button\" class=\"btn btn-outline-info\" style='margin-left: 20px'>U</button>"
+                        + "<button onclick='openNotebookFormUrlById(this)' type=\"button\" class=\"btn btn-outline-info\" style='margin-left: 20px'>U</button>"
                         + "<button onclick='deleteNotebook(this)' type=\"button\" class=\"btn btn-outline-danger\" style='margin-left: 20px'>D</button>"
                         + "</td>")
                     $('#tbody').append("<tr id='" + key + "'>" + items + "</tr>");

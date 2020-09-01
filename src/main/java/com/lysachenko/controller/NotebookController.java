@@ -35,6 +35,21 @@ public class NotebookController {
         return ResponseEntity.ok(notebook);
     }
 
+    @PutMapping
+    public ResponseEntity<Notebook> updateNotebook(@RequestBody Notebook notebook) {
+        Notebook notebookFromDB = notebookService.getById(notebook.getId());
+        notebookFromDB.setModel(notebook.getModel());
+        notebookFromDB.setManufacturer(notebook.getManufacturer());
+        notebookFromDB.setProcessor(notebook.getProcessor());
+        notebookFromDB.setMemory(notebook.getMemory());
+        notebookFromDB.setWasInUse(notebook.isWasInUse());
+        notebookFromDB.setHullType(notebook.getHullType());
+        notebookFromDB.setPrice(notebook.getPrice());
+        notebookFromDB.setDateOfIssue(notebook.getDateOfIssue());
+        notebookService.save(notebook);
+        return ResponseEntity.ok(notebook);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Notebook> deleteNotebook(@PathVariable Long id) {
         Notebook notebook = notebookService.getById(id);
