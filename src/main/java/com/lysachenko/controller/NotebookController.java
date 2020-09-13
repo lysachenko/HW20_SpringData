@@ -2,6 +2,7 @@ package com.lysachenko.controller;
 
 import com.lysachenko.model.Notebook;
 import com.lysachenko.service.NotebookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notebooks")
+@RequiredArgsConstructor
 public class NotebookController {
 
     private final NotebookService notebookService;
-
-    @Autowired
-    public NotebookController(NotebookService notebookService) {
-        this.notebookService = notebookService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Notebook>> getAll() {
@@ -37,16 +34,7 @@ public class NotebookController {
 
     @PutMapping
     public ResponseEntity<Notebook> updateNotebook(@RequestBody Notebook notebook) {
-        Notebook notebookFromDB = notebookService.getById(notebook.getId());
-        notebookFromDB.setModel(notebook.getModel());
-        notebookFromDB.setManufacturer(notebook.getManufacturer());
-        notebookFromDB.setProcessor(notebook.getProcessor());
-        notebookFromDB.setMemory(notebook.getMemory());
-        notebookFromDB.setWasInUse(notebook.isWasInUse());
-        notebookFromDB.setHullType(notebook.getHullType());
-        notebookFromDB.setPrice(notebook.getPrice());
-        notebookFromDB.setDateOfIssue(notebook.getDateOfIssue());
-        notebookService.save(notebookFromDB);
+        notebookService.update(notebook);
         return ResponseEntity.ok(notebook);
     }
 
